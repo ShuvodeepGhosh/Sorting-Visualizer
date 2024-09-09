@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import "./SortingVisualizer.css";
 import { bubbleSort, bubbleSortDetails } from "./Algorithms/BubbleSort";
 import {
   insertionSort,
@@ -9,103 +9,6 @@ import {
   selectionSort,
   selectionSortDetails,
 } from "./Algorithms/SelectionSort";
-
-const Container = styled.div`
-  display: flex;
-  align-items: flex-end;
-  height: 350px;
-  width: 100%;
-  border: 1px solid #ccc;
-  background: #36454f;
-  position: relative;
-  margin-top: 1%;
-  border: none;
-`;
-
-const Bar = styled.div`
-  width: 15px;
-  background: ${(props) =>
-    props.isSorted ? "#2ecc71" : props.sorting ? "#e74c3c" : "#3498db"};
-  margin: 0 5px;
-  position: relative;
-`;
-
-const ValueLabel = styled.div`
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 16px;
-  color: #fff;
-  font-weight: 600;
-`;
-
-const Controls = styled.div`
-  margin-top: 20px;
-`;
-
-const Input = styled.input`
-  margin-right: 10px;
-`;
-
-const Button = styled.button`
-  margin-right: 10px;
-`;
-
-const StepDescription = styled.div`
-  margin-top: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-`;
-
-const ArrayState = styled.div`
-  margin-top: 10px;
-  font-size: 16px;
-  color: #333;
-`;
-
-const NoArrayMessage = styled.div`
-  font-size: 18px;
-  color: #999;
-  text-align: center;
-  margin-top: 20px;
-`;
-
-const NoAlgorithmMessage = styled.div`
-  font-size: 18px;
-  color: #999;
-  text-align: center;
-  margin-top: 20px;
-`;
-
-const AlgorithmDetails = styled.div`
-  margin-top: 20px;
-  font-size: 14px;
-  color: #555;
-`;
-
-const Sidebar = styled.div`
-  width: 250px;
-  background: #2c3e50;
-  padding-left: 20px;
-  padding-right: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  color: #fff;
-  text-align: center;
-`;
-
-const MainContent = styled.div`
-  flex: 1;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Layout = styled.div`
-  display: flex;
-  height: 100vh;
-`;
 
 const SortingVisualizer = () => {
   const [array, setArray] = useState([]);
@@ -191,43 +94,56 @@ const SortingVisualizer = () => {
   };
 
   return (
-    <Layout>
-      <Sidebar>
+    <div className="layout">
+      <div className="sidebar">
         <h3>Sorting Visualizer</h3>
 
-        <Controls>
-          <Button
+        <div className="controls">
+          <button
+            className="button"
             onClick={() => handleAlgorithmClick("Bubble Sort")}
             disabled={sorting || array.length === 0}
           >
             Bubble Sort
-          </Button>
-          <Button
+          </button>
+          <button
+            className="button"
             onClick={() => handleAlgorithmClick("Insertion Sort")}
             disabled={sorting || array.length === 0}
           >
             Insertion Sort
-          </Button>
-          <Button
+          </button>
+          <button
+            className="button"
             onClick={() => handleAlgorithmClick("Selection Sort")}
             disabled={sorting || array.length === 0}
           >
             Selection Sort
-          </Button>
-          <Button disabled>Merge Sort</Button>
-          <Button disabled>Quick Sort</Button>
-          <Button disabled>Heap Sort</Button>
-        </Controls>
+          </button>
+          <button className="button" disabled>
+            Merge Sort
+          </button>
+          <button className="button" disabled>
+            Quick Sort
+          </button>
+          <button className="button" disabled>
+            Heap Sort
+          </button>
+        </div>
 
         <h3>Searching Visualizer</h3>
 
-        <Controls>
-          <Button disabled>Linear Search</Button>
-          <Button disabled>Binary Search</Button>
-        </Controls>
+        <div className="controls">
+          <button className="button" disabled>
+            Linear Search
+          </button>
+          <button className="button" disabled>
+            Binary Search
+          </button>
+        </div>
 
         {/* Algorithm Details Section (uncomment to use) */}
-        {/* <AlgorithmDetails>
+        {/* <div className="algorithm-details">
           {details.name && (
             <>
               <h3>{details.name}</h3>
@@ -244,11 +160,12 @@ const SortingVisualizer = () => {
               </p>
             </>
           )}
-        </AlgorithmDetails> */}
-      </Sidebar>
-      <MainContent>
+        </div> */}
+      </div>
+      <div className="main-content">
         <form onSubmit={handleSubmit}>
-          <Input
+          <input
+            className="input"
             type="text"
             value={input}
             onChange={handleInputChange}
@@ -272,38 +189,35 @@ const SortingVisualizer = () => {
         {array.length > 0 ? (
           selectedAlgorithm ? (
             <>
-              <Container>
+              <div className="canvas">
                 {array.map((value, index) => (
-                  <Bar
+                  <div
                     key={index}
-                    style={{
-                      height: `${value}px`,
-                    }}
-                    isSorted={sorted}
-                    sorting={sorting}
+                    className={`bar ${
+                      sorted ? "sorted" : sorting ? "sorting" : "default"
+                    }`}
+                    style={{ height: `${value * 10}px` }}
                   >
-                    <ValueLabel>{value}</ValueLabel>
-                  </Bar>
+                    <div className="value-label">{value}</div>
+                  </div>
                 ))}
-              </Container>
-              <ArrayState style={{ color: "white" }}>
-                [ {arrayState} ]
-              </ArrayState>
-              <StepDescription style={{ color: "#646cff" }}>
-                {stepDescription}
-              </StepDescription>
+              </div>
+              <div className="array-state">[ {arrayState} ]</div>
+              <div className="step-description">{stepDescription}</div>
               <h3>Selected Algorithm : {selectedAlgorithm}</h3>
             </>
           ) : (
-            <NoAlgorithmMessage>
+            <div className="no-algorithm-message">
               Please select an algorithm to visualize the sorting process.
-            </NoAlgorithmMessage>
+            </div>
           )
         ) : (
-          <NoArrayMessage>Please enter an array to get started.</NoArrayMessage>
+          <div className="no-array-message">
+            Please enter an array to get started.
+          </div>
         )}
-      </MainContent>
-    </Layout>
+      </div>
+    </div>
   );
 };
 
