@@ -9,6 +9,7 @@ import {
   selectionSort,
   selectionSortDetails,
 } from "./Algorithms/SelectionSort";
+import Canvas from "./Canvas"; // Import the new Canvas component
 
 const SortingVisualizer = () => {
   const [array, setArray] = useState([]);
@@ -189,19 +190,7 @@ const SortingVisualizer = () => {
         {array.length > 0 ? (
           selectedAlgorithm ? (
             <>
-              <div className="canvas">
-                {array.map((value, index) => (
-                  <div
-                    key={index}
-                    className={`bar ${
-                      sorted ? "sorted" : sorting ? "sorting" : "default"
-                    }`}
-                    style={{ height: `${value * 10}px` }}
-                  >
-                    <div className="value-label">{value}</div>
-                  </div>
-                ))}
-              </div>
+              <Canvas array={array} sorted={sorted} sorting={sorting} />
               <div className="array-state">[ {arrayState} ]</div>
               <div className="step-description">{stepDescription}</div>
               <h3>Selected Algorithm : {selectedAlgorithm}</h3>

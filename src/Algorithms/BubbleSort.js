@@ -23,7 +23,7 @@ export const bubbleSort = async (
         setStepDescription(`Swapped ${arr[j]} and ${arr[j + 1]}`);
         setArrayState(arr.join(", "));
         setArray([...arr]);
-        await sleep(50);
+        await sleep(500);
       }
     }
   }

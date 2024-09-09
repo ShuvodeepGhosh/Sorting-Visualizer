@@ -32,7 +32,7 @@ export const insertionSort = async (
     setStepDescription(`Inserted ${key} at position ${j + 1}`);
     setArrayState(arr.join(", "));
     setArray([...arr]);
-    await sleep(1000);
+    await sleep(500);
   }
   setStepDescription("Sorting completed.");
 };
