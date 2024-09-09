@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import "./Assets/SortingVisualizer.css";
-import { bubbleSort, bubbleSortDetails } from "./Algorithms/BubbleSort";
+import { bubbleSort, bubbleSortDetails } from "./SortingAlgorithms/BubbleSort";
 import {
   insertionSort,
   insertionSortDetails,
-} from "./Algorithms/InsertionSort";
+} from "./SortingAlgorithms/InsertionSort";
 import {
   selectionSort,
   selectionSortDetails,
-} from "./Algorithms/SelectionSort";
+} from "./SortingAlgorithms/SelectionSort";
 import LinearSearch from "./LinearSearch";
+import BinarySearch from "./BinarySearch";
 import Canvas from "./Canvas";
 
 const SortingVisualizer = () => {
@@ -54,7 +55,7 @@ const SortingVisualizer = () => {
 
   const handleAlgorithmClick = (alg) => {
     setSelectedAlgorithm(alg);
-    if (alg !== "Linear Search") {
+    if (alg !== "Linear Search" && alg !== "Binary Search") {
       setSearchTarget(null);
       setSearchStarted(false);
     }
@@ -106,6 +107,14 @@ const SortingVisualizer = () => {
   };
 
   const handleLinearSearchClick = () => {
+    if (searchTarget === null) {
+      alert("Please enter a target value to search for");
+      return;
+    }
+    setSearchStarted(true);
+  };
+
+  const handleBinarySearchClick = () => {
     if (searchTarget === null) {
       alert("Please enter a target value to search for");
       return;
@@ -168,11 +177,16 @@ const SortingVisualizer = () => {
           >
             Linear Search
           </button>
-          <button className="button" disabled>
+          <button
+            className="button"
+            onClick={() => handleAlgorithmClick("Binary Search")}
+            disabled={sorting || array.length === 0}
+          >
             Binary Search
           </button>
         </div>
       </div>
+
       <div className="main-content">
         <form onSubmit={handleSubmit}>
           <input
@@ -186,7 +200,6 @@ const SortingVisualizer = () => {
           <button type="submit" disabled={sorting} id="setArray">
             Set Array
           </button>
-
           {selectedAlgorithm === "Linear Search" && (
             <div style={{ marginTop: "2%" }}>
               <input
@@ -204,18 +217,35 @@ const SortingVisualizer = () => {
               </button>
             </div>
           )}
-
-          {selectedAlgorithm !== "Linear Search" && (
-            <button
-              onClick={handleStartClick}
-              disabled={
-                sorting || array.length === 0 || !selectedAlgorithm || sorted
-              }
-              id="start"
-            >
-              Start
-            </button>
+          {selectedAlgorithm === "Binary Search" && (
+            <div style={{ marginTop: "2%" }}>
+              <input
+                type="number"
+                onChange={handleSearchTargetChange}
+                placeholder="Search target"
+                disabled={sorting}
+              />
+              <button
+                onClick={handleBinarySearchClick}
+                disabled={sorting || searchTarget === null}
+                id="start"
+              >
+                Start Search
+              </button>
+            </div>
           )}
+          {selectedAlgorithm !== "Linear Search" &&
+            selectedAlgorithm !== "Binary Search" && (
+              <button
+                onClick={handleStartClick}
+                disabled={
+                  sorting || array.length === 0 || !selectedAlgorithm || sorted
+                }
+                id="start"
+              >
+                Start
+              </button>
+            )}
         </form>
 
         {array.length > 0 ? (
@@ -227,10 +257,24 @@ const SortingVisualizer = () => {
               searchStarted={searchStarted}
               selectedAlgorithm={selectedAlgorithm}
             />
+          ) : selectedAlgorithm === "Binary Search" ? (
+            <BinarySearch
+              array={originalArray}
+              target={searchTarget}
+              onComplete={handleSearchComplete}
+              searchStarted={searchStarted}
+              selectedAlgorithm={selectedAlgorithm}
+            />
           ) : selectedAlgorithm ? (
             <>
               <Canvas array={array} sorted={sorted} sorting={sorting} />
-              <div className="array-state">[ {arrayState} ]</div>
+              <div className="array-state">
+                {array.map((value, index) => (
+                  <div key={index} className={"array-element"}>
+                    {value}
+                  </div>
+                ))}
+              </div>
               <div className="step-description">{stepDescription}</div>
               <h3>Selected Algorithm : {selectedAlgorithm}</h3>
             </>

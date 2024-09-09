@@ -1,5 +1,5 @@
 import React from "react";
-import "./SortingVisualizer.css";
+import "./Assets/SortingVisualizer.css";
 
 const Canvas = ({ array, sorted, sorting }) => {
   return (
