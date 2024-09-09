@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./SortingVisualizer.css";
+import "./Assets/SortingVisualizer.css";
 import { bubbleSort, bubbleSortDetails } from "./Algorithms/BubbleSort";
 import {
   insertionSort,
@@ -9,10 +9,12 @@ import {
   selectionSort,
   selectionSortDetails,
 } from "./Algorithms/SelectionSort";
-import Canvas from "./Canvas"; // Import the new Canvas component
+import LinearSearch from "./LinearSearch";
+import Canvas from "./Canvas";
 
 const SortingVisualizer = () => {
   const [array, setArray] = useState([]);
+  const [originalArray, setOriginalArray] = useState([]);
   const [input, setInput] = useState("");
   const [sorting, setSorting] = useState(false);
   const [stepDescription, setStepDescription] = useState("");
@@ -20,6 +22,8 @@ const SortingVisualizer = () => {
   const [details, setDetails] = useState({});
   const [sorted, setSorted] = useState(false);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("");
+  const [searchTarget, setSearchTarget] = useState(null);
+  const [searchStarted, setSearchStarted] = useState(false);
 
   const handleInputChange = (event) => {
     setInput(event.target.value);
@@ -33,11 +37,14 @@ const SortingVisualizer = () => {
       .filter((num) => !isNaN(num) && num > 0);
     if (parsedArray.length > 0) {
       setArray(parsedArray);
+      setOriginalArray(parsedArray);
       setArrayState(parsedArray.join(", "));
       setSorting(false);
       setSorted(false);
       setStepDescription("");
       setDetails({});
+      setSearchTarget(null);
+      setSearchStarted(false);
     } else {
       alert("Please enter a valid array");
     }
@@ -47,6 +54,10 @@ const SortingVisualizer = () => {
 
   const handleAlgorithmClick = (alg) => {
     setSelectedAlgorithm(alg);
+    if (alg !== "Linear Search") {
+      setSearchTarget(null);
+      setSearchStarted(false);
+    }
   };
 
   const handleStartClick = async () => {
@@ -94,11 +105,27 @@ const SortingVisualizer = () => {
     setSorted(true);
   };
 
+  const handleLinearSearchClick = () => {
+    if (searchTarget === null) {
+      alert("Please enter a target value to search for");
+      return;
+    }
+    setSearchStarted(true);
+  };
+
+  const handleSearchTargetChange = (event) => {
+    setSearchTarget(Number(event.target.value));
+  };
+
+  const handleSearchComplete = (index) => {
+    setSorting(false);
+    setSearchStarted(false);
+  };
+
   return (
     <div className="layout">
       <div className="sidebar">
         <h3>Sorting Visualizer</h3>
-
         <div className="controls">
           <button
             className="button"
@@ -133,35 +160,18 @@ const SortingVisualizer = () => {
         </div>
 
         <h3>Searching Visualizer</h3>
-
         <div className="controls">
-          <button className="button" disabled>
+          <button
+            className="button"
+            onClick={() => handleAlgorithmClick("Linear Search")}
+            disabled={sorting || array.length === 0}
+          >
             Linear Search
           </button>
           <button className="button" disabled>
             Binary Search
           </button>
         </div>
-
-        {/* Algorithm Details Section (uncomment to use) */}
-        {/* <div className="algorithm-details">
-          {details.name && (
-            <>
-              <h3>{details.name}</h3>
-              <p>{details.description}</p>
-              <p>
-                <strong>Best Case Time Complexity:</strong> {details.bestCase}
-              </p>
-              <p>
-                <strong>Worst Case Time Complexity:</strong> {details.worstCase}
-              </p>
-              <p>
-                <strong>Average Case Time Complexity:</strong>{" "}
-                {details.averageCase}
-              </p>
-            </>
-          )}
-        </div> */}
       </div>
       <div className="main-content">
         <form onSubmit={handleSubmit}>
@@ -176,19 +186,48 @@ const SortingVisualizer = () => {
           <button type="submit" disabled={sorting} id="setArray">
             Set Array
           </button>
-          <button
-            onClick={handleStartClick}
-            disabled={
-              sorting || array.length === 0 || !selectedAlgorithm || sorted
-            }
-            id="start"
-          >
-            Start
-          </button>
+
+          {selectedAlgorithm === "Linear Search" && (
+            <div style={{ marginTop: "2%" }}>
+              <input
+                type="number"
+                onChange={handleSearchTargetChange}
+                placeholder="Search target"
+                disabled={sorting}
+              />
+              <button
+                onClick={handleLinearSearchClick}
+                disabled={sorting || searchTarget === null}
+                id="start"
+              >
+                Start Search
+              </button>
+            </div>
+          )}
+
+          {selectedAlgorithm !== "Linear Search" && (
+            <button
+              onClick={handleStartClick}
+              disabled={
+                sorting || array.length === 0 || !selectedAlgorithm || sorted
+              }
+              id="start"
+            >
+              Start
+            </button>
+          )}
         </form>
 
         {array.length > 0 ? (
-          selectedAlgorithm ? (
+          selectedAlgorithm === "Linear Search" ? (
+            <LinearSearch
+              array={originalArray}
+              target={searchTarget}
+              onComplete={handleSearchComplete}
+              searchStarted={searchStarted}
+              selectedAlgorithm={selectedAlgorithm}
+            />
+          ) : selectedAlgorithm ? (
             <>
               <Canvas array={array} sorted={sorted} sorting={sorting} />
               <div className="array-state">[ {arrayState} ]</div>
@@ -197,7 +236,7 @@ const SortingVisualizer = () => {
             </>
           ) : (
             <div className="no-algorithm-message">
-              Please select an algorithm to visualize the sorting process.
+              Please select an algorithm to visualize the process.
             </div>
           )
         ) : (

@@ -1,0 +1,28 @@
+.linear-search-container {
+  display: flex;
+  align-items: center;
+}
+
+.array-element {
+  margin: 0 5px;
+  padding: 5px;
+  font-size: 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.highlighted {
+  background-color: yellow;
+  color: black;
+}
+
+.found {
+  background-color: green;
+  color: white;
+}
+
+.result-message {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
