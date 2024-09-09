@@ -1,12 +1,3 @@
-export const bubbleSortDetails = {
-  name: "Bubble Sort",
-  description:
-    "Bubble Sort repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order. The pass through the list is repeated until the list is sorted.",
-  bestCase: "O(n)",
-  worstCase: "O(n^2)",
-  averageCase: "O(n^2)",
-};
-
 export const bubbleSort = async (
   array,
   setArray,

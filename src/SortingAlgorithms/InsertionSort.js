@@ -1,12 +1,3 @@
-export const insertionSortDetails = {
-  name: "Insertion Sort",
-  description:
-    "Insertion Sort builds the final sorted array one item at a time. It picks elements from the unsorted part and places them in the correct position in the sorted part.",
-  bestCase: "O(n)",
-  worstCase: "O(n^2)",
-  averageCase: "O(n^2)",
-};
-
 export const insertionSort = async (
   array,
   setArray,

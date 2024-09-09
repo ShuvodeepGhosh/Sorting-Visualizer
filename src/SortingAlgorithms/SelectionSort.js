@@ -1,12 +1,3 @@
-export const selectionSortDetails = {
-  name: "Selection Sort",
-  description:
-    "Selection Sort repeatedly finds the minimum element from the unsorted part and puts it at the beginning.",
-  bestCase: "O(n^2)",
-  worstCase: "O(n^2)",
-  averageCase: "O(n^2)",
-};
-
 export const selectionSort = async (
   array,
   setArray,

@@ -1,14 +1,8 @@
 import React, { useState } from "react";
 import "./Assets/SortingVisualizer.css";
-import { bubbleSort, bubbleSortDetails } from "./SortingAlgorithms/BubbleSort";
-import {
-  insertionSort,
-  insertionSortDetails,
-} from "./SortingAlgorithms/InsertionSort";
-import {
-  selectionSort,
-  selectionSortDetails,
-} from "./SortingAlgorithms/SelectionSort";
+import { bubbleSort } from "./SortingAlgorithms/BubbleSort";
+import { insertionSort } from "./SortingAlgorithms/InsertionSort";
+import { selectionSort } from "./SortingAlgorithms/SelectionSort";
 import LinearSearch from "./LinearSearch";
 import BinarySearch from "./BinarySearch";
 import Canvas from "./Canvas";
