@@ -61,41 +61,46 @@ const SortingVisualizer = () => {
       return;
     }
 
-    let algorithmDetails;
+    console.log("Starting algorithm:", selectedAlgorithm);
     setStepDescription("");
     setArrayState(array.join(", "));
     setSorting(true);
 
-    if (selectedAlgorithm === "Bubble Sort") {
-      algorithmDetails = bubbleSortDetails;
-      await bubbleSort(
-        array,
-        setArray,
-        setStepDescription,
-        setArrayState,
-        sleep
-      );
-    } else if (selectedAlgorithm === "Insertion Sort") {
-      algorithmDetails = insertionSortDetails;
-      await insertionSort(
-        array,
-        setArray,
-        setStepDescription,
-        setArrayState,
-        sleep
-      );
-    } else if (selectedAlgorithm === "Selection Sort") {
-      algorithmDetails = selectionSortDetails;
-      await selectionSort(
-        array,
-        setArray,
-        setStepDescription,
-        setArrayState,
-        sleep
-      );
+    try {
+      if (selectedAlgorithm === "Bubble Sort") {
+        console.log("Initial Array:", array);
+        await bubbleSort(
+          [...array],
+          (newArray) => setArray([...newArray]),
+          setStepDescription,
+          setArrayState,
+          sleep
+        );
+      } else if (selectedAlgorithm === "Insertion Sort") {
+        console.log("Initial Array:", array);
+        await insertionSort(
+          [...array],
+          (newArray) => setArray([...newArray]),
+          setStepDescription,
+          setArrayState,
+          sleep
+        );
+      } else if (selectedAlgorithm === "Selection Sort") {
+        console.log("Initial Array:", array);
+        await selectionSort(
+          [...array],
+          (newArray) => setArray([...newArray]),
+          setStepDescription,
+          setArrayState,
+          sleep
+        );
+      }
+    } catch (error) {
+      console.error("Error during sorting:", error);
     }
 
-    setDetails(algorithmDetails);
+    // setDetails({
+    // });
     setSorting(false);
     setSorted(true);
   };
